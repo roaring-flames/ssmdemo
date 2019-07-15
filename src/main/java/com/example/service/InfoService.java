@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.DTO.InfoDTO;
 import com.example.entity.Info;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,6 +14,22 @@ public interface InfoService {
      * @return
      */
 //    int updateAll(List<Info>list);
+
+    /**
+     * 更新一条信息
+     *
+     * @param info
+     * @return
+     */
+   // int updateByPrimaryKey(List<Info> info);
+
+    /**
+     * 更新一条信息
+     *
+     * @param info
+     * @return
+     */
+    int updateAll(List<Info> info);
 
 
     /**
@@ -32,6 +49,7 @@ public interface InfoService {
 
     /**
      * 删除单条记录
+     *
      * @param id
      * @return
      */
@@ -39,6 +57,7 @@ public interface InfoService {
 
     /**
      * 批量删除单条记录
+     *
      * @param list
      * @return
      */
@@ -51,15 +70,16 @@ public interface InfoService {
 //    int deleteAll();
 
 
-
     /**
      * 查询所有
+     *
      * @return
      */
     List<Info> selectAll();
 
     /**
      * 动态查询
+     *
      * @param info
      * @return
      */

@@ -21,6 +21,12 @@ public interface InfoMapper {
 
     //int updateAll(@Param("list")List<Info>list);
 
+    /**
+     * 更新一条信息
+     * @param info
+     * @return
+     */
+    int updateByPrimaryKey(@Param("list") List<Info> info);
 
     /**
      * 删除单条信息

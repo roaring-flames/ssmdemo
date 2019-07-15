@@ -54,44 +54,43 @@
     </delete>
 
     <!--插入单条信息-->
-    <insert id="insert" parameterType="com.example.entity.Info">
+    <!--<insert id="insert" parameterType="com.example.entity.Info">
       insert into info ( username, password,age)
       values ( #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
         #{age,jdbcType=INTEGER})
+    </insert>-->
+
+    <insert id="insert" parameterType="com.example.entity.Info">
+        insert into info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <!-- <if test="id != null">
+                 id,
+             </if>-->
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <!--<if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>-->
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=INTEGER},
+            </if>
+        </trim>
     </insert>
-
-
-    <!--  <insert id="insert" parameterType="com.example.entity.Info">
-          insert into info
-          <trim prefix="(" suffix=")" suffixOverrides=",">
-             &lt;!&ndash; <if test="id != null">
-                  id,
-              </if>&ndash;&gt;
-              <if test="username != null">
-                  username,
-              </if>
-              <if test="password != null">
-                  password,
-              </if>
-              <if test="age != null">
-                  age,
-              </if>
-          </trim>
-          <trim prefix="values (" suffix=")" suffixOverrides=",">
-              &lt;!&ndash;<if test="id != null">
-                  #{id,jdbcType=INTEGER},
-              </if>&ndash;&gt;
-              <if test="username != null">
-                  #{username,jdbcType=VARCHAR},
-              </if>
-              <if test="password != null">
-                  #{password,jdbcType=VARCHAR},
-              </if>
-              <if test="age != null">
-                  #{age,jdbcType=INTEGER},
-              </if>
-          </trim>
-      </insert>-->
     <!--<update id="updateByPrimaryKeySelective" parameterType="com.example.entity.Info">
       update info
       <set>
@@ -107,11 +106,25 @@
       </set>
       where id = #{id,jdbcType=INTEGER}
     </update>-->
-    <!--<update id="updateByPrimaryKey" parameterType="com.example.entity.Info">
-      update info
-      set username = #{username,jdbcType=VARCHAR},
+    <!--<update id="updateByPrimaryKey" parameterType="java.util.List">
+        update info
+        set username = #{username,jdbcType=VARCHAR},
         password = #{password,jdbcType=VARCHAR},
         age = #{age,jdbcType=INTEGER}
-      where id = #{id,jdbcType=INTEGER}
+        where id in  
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                     #{item.id}                 
+        </foreach>
+
     </update>-->
+    <update id="updateByPrimaryKey" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update info set         
+            username=#{item.username,jdbcType=VARCHAR},
+            password=#{item.password,jdbcType=VARCHAR},
+            age=#{item.age,jdbcType=INTEGER}
+            where id= #{item.id}
+        </foreach>
+    </update>
+
 </mapper>

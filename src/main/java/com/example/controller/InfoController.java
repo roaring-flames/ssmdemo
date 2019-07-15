@@ -94,12 +94,16 @@ public class InfoController {
     public ApiResult insert(@RequestBody Info info) {
         ApiResult apiResult = new ApiResult();
         int num = infoService.insert(info);
-        if(StringUtils.isNotNullNorEmpty(info.toString())){
-            apiResult.setCode(200);
-            apiResult.setData(num);
-        }
-        apiResult.setCode(500);
-        apiResult.setException("插入失败！");
+        apiResult.setData(num);
+        return apiResult;
+    }
+
+    @ApiOperation(value = "批量更新用户信息", notes = "批量更新")
+    @PostMapping("/update")
+    public ApiResult update(@RequestBody List<Info> info) {
+        ApiResult apiResult = new ApiResult();
+        int num = infoService.updateAll(info);
+        apiResult.setData(num);
         return apiResult;
     }
 

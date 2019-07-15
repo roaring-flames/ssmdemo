@@ -16,6 +16,16 @@ public class InfoServiceImpl implements InfoService {
     private InfoMapper infoMapper;
 
 
+  /*  @Override
+    public int updateByPrimaryKey(List<Info> info) {
+        return infoMapper.updateByPrimaryKey(info);
+    }*/
+
+    @Override
+    public int updateAll(List<Info> info) {
+        return infoMapper.updateByPrimaryKey(info);
+    }
+
     /**
      * 添加一条信息
      *
