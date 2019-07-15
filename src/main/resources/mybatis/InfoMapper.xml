@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.InfoMapper">
+    <resultMap id="BaseResultMap" type="com.example.entity.Info">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+    </resultMap>
+    <!--  <sql id="Base_Column_List">
+        id, username, password, age
+      </sql>
+      <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from info
+        where id = #{id,jdbcType=INTEGER}
+      </select>-->
+
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, username, password, age from info
+  </select>
+
+
+    <select id="selectAlls" resultMap="BaseResultMap" parameterType="com.example.entity.Info">
+        select id, username, password, age from info
+        <trim prefix="WHERE" prefixOverrides="AND | OR" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="username != null and username != ''">
+                and CONCAT(username) like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="password != null and password != ''">
+                and CONCAT(password) like CONCAT('%',#{password,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="age != null and age != ''">
+                and age = #{age}
+            </if>
+        </trim>
+    </select>
+
+    <!--删除-->
+    <delete id="delete" parameterType="java.lang.Integer">
+      delete from info where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteAll" parameterType="java.util.List">
+        delete from info where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.id,jdbcType=INTEGER}
+        </foreach>
+    </delete>
+
+    <!--插入单条信息-->
+    <insert id="insert" parameterType="com.example.entity.Info">
+      insert into info ( username, password,age)
+      values ( #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{age,jdbcType=INTEGER})
+    </insert>
+
+
+    <!--  <insert id="insert" parameterType="com.example.entity.Info">
+          insert into info
+          <trim prefix="(" suffix=")" suffixOverrides=",">
+             &lt;!&ndash; <if test="id != null">
+                  id,
+              </if>&ndash;&gt;
+              <if test="username != null">
+                  username,
+              </if>
+              <if test="password != null">
+                  password,
+              </if>
+              <if test="age != null">
+                  age,
+              </if>
+          </trim>
+          <trim prefix="values (" suffix=")" suffixOverrides=",">
+              &lt;!&ndash;<if test="id != null">
+                  #{id,jdbcType=INTEGER},
+              </if>&ndash;&gt;
+              <if test="username != null">
+                  #{username,jdbcType=VARCHAR},
+              </if>
+              <if test="password != null">
+                  #{password,jdbcType=VARCHAR},
+              </if>
+              <if test="age != null">
+                  #{age,jdbcType=INTEGER},
+              </if>
+          </trim>
+      </insert>-->
+    <!--<update id="updateByPrimaryKeySelective" parameterType="com.example.entity.Info">
+      update info
+      <set>
+        <if test="username != null">
+          username = #{username,jdbcType=VARCHAR},
+        </if>
+        <if test="password != null">
+          password = #{password,jdbcType=VARCHAR},
+        </if>
+        <if test="age != null">
+          age = #{age,jdbcType=INTEGER},
+        </if>
+      </set>
+      where id = #{id,jdbcType=INTEGER}
+    </update>-->
+    <!--<update id="updateByPrimaryKey" parameterType="com.example.entity.Info">
+      update info
+      set username = #{username,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        age = #{age,jdbcType=INTEGER}
+      where id = #{id,jdbcType=INTEGER}
+    </update>-->
+</mapper>
